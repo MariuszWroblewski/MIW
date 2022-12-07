@@ -86,7 +86,6 @@ def decyzja(lista, x, k):
     return x
 
 
-# prepare data
 iris = load_iris()
 df = pd.DataFrame(iris.data, columns=iris.feature_names)
 df['target'] = iris.target
@@ -95,6 +94,10 @@ arr = df.to_numpy()
 mask = np.random.rand(len(arr)) <= 0.7
 training_array = arr[mask]
 testing_array = arr[~mask]
-testing_array = np.delete(testing_array, 4, 1)
-knn = decyzja(training_array, testing_array, 2)
+testing_array_copy = np.delete(testing_array, 4, 1)
+knn = decyzja(training_array, testing_array_copy, 5)
+nonzero = np.nonzero(knn-testing_array)[0]
 print(knn)
+print("Ind niezerowych elementów porównania macierzy", nonzero)
+print("% poprawności algorytmu: ", (1 - len(nonzero)/len(testing_array_copy))*100)
+
